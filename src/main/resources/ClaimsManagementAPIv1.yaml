@@ -1,0 +1,88 @@
+openapi: 3.1.0
+info:
+  title: Claims Management API
+  description: API for managing insurance claims
+  version: 1.0.0
+servers:
+  - url: 'https'
+paths:
+    /claims:
+      post:
+        summary: Create a new claim
+        operationId: createClaim
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Claim'
+
+        responses:
+          '201':
+            description: Claim created successfully
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    claimId:
+                      type: string
+          '400':
+            description: Bad request
+          '500':
+            description: Internal server error
+    /claims/{claimId}:
+      get:
+          summary: Retrieve a claim by ID
+          operationId: getClaimById
+          parameters:
+          - name: claimId
+            in: path
+            required: true
+            schema:
+            type: string
+          responses:
+          '200':
+              description: Claim retrieved successfully
+              content:
+              application/json:
+                  schema:
+                  $ref: '#/components/schemas/Claim'
+          '404':
+              description: Claim not found
+          '500':
+              description: Internal server error
+
+components:
+  schemas:
+    Claim:
+      type: object
+      properties:
+        claimId:
+          type: string
+          description: Unique identifier for the claim
+        customerId:
+          type: string
+          description: Unique identifier for the customer
+        sinisterType:
+          type: string
+          description: Type of the sinister (e.g., accident, theft)
+        description:
+          type: string
+          description: Description of the claim
+        dateOfIncident:
+          type: string
+          format: date
+          description: Date of the incident
+        documentation:
+          type: array
+          items:
+            type: string
+            format: uri
+          description: List of documentation URLs related to the claim
+        status:
+          type: enum
+          enum:
+              - PENDING_DOCUMENTATION
+              - PENDING
+              - CLOSED
