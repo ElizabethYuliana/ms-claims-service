@@ -5,6 +5,8 @@ info:
   version: 1.0.0
 servers:
   - url: 'https'
+security:
+  - bearerAuth: []
 paths:
     /claims:
       post:
@@ -16,21 +18,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Claim'
-
         responses:
           '201':
             description: Claim created successfully
             content:
               application/json:
                 schema:
-                  type: object
-                  properties:
-                    claimId:
-                      type: string
+                  $ref: '#/components/schemas/CreateClaimRequest'
           '400':
             description: Bad request
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse'
           '500':
             description: Internal server error
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse'
+
     /claims/{claimId}:
       get:
           summary: Retrieve a claim by ID
@@ -40,20 +47,149 @@ paths:
             in: path
             required: true
             schema:
-            type: string
+              type: string
           responses:
-          '200':
+            '200':
               description: Claim retrieved successfully
               content:
-              application/json:
+                application/json:
                   schema:
-                  $ref: '#/components/schemas/Claim'
-          '404':
+                    $ref: '#/components/schemas/Claim'
+            '404':
               description: Claim not found
-          '500':
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/ErrorResponse'
+            '500':
               description: Internal server error
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/ErrorResponse'
+
+    /claims/customer/{customerId}:
+      get:
+        summary: Retrieve all claims for a customer
+        operationId: getClaimsByCustomer
+        parameters:
+          - name: customerId
+            in: path
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Claims retrieved successfully
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Claim'
+          '404':
+            description: Customer not found
+          '500':
+            description: Internal server error
+
+    /claims/{claimId}/status:
+      put:
+        summary: Update the status of a claim
+        operationId: updateClaimStatus
+        parameters:
+          - name: claimId
+            in: path
+            required: true
+            schema:
+              type: string
+        requestBody:
+          required: true
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum: [PENDING_DOCUMENTATION, PENDING, CLOSED]
+        responses:
+          '200':
+            description: Claim status updated successfully
+          '400':
+            description: Bad request
+          '404':
+            description: Claim not found
+          '500':
+            description: Internal server error
+
+    /claims/{claimId}/history:
+      get:
+        summary: Retrieve the history of a claim
+        operationId: getClaimHistory
+        parameters:
+          - name: claimId
+            in: path
+            required: true
+            schema:
+              type: string
+        responses:
+          '200':
+            description: Claim history retrieved successfully
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      date:
+                        type: string
+                        format: date-time
+                      status:
+                        type: string
+                      notes:
+                        type: string
+          '404':
+            description: Claim not found
+          '500':
+            description: Internal server error
+
+    /claims/report/monthly:
+      get:
+        summary: Generate a monthly report of claims
+        operationId: generateMonthlyReport
+        parameters:
+          - name: month
+            in: query
+            required: true
+            schema:
+              type: string
+              format: date
+        responses:
+          '200':
+            description: Monthly report generated successfully
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    totalClaims:
+                      type: integer
+                    claimsByStatus:
+                      type: object
+                      additionalProperties:
+                        type: integer
+          '400':
+            description: Bad request
+          '500':
+            description: Internal server error
 
 components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
   schemas:
     Claim:
       type: object
@@ -86,3 +222,26 @@ components:
               - PENDING_DOCUMENTATION
               - PENDING
               - CLOSED
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: integer
+          description: Error code
+        message:
+          type: string
+          description: Error message
+        details:
+          type: string
+          description: Additional error details
+
+    CreateClaimRequest:
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: Unique identifier for the customer
+        message:
+          type: string
+          description: Confirmation message for the claim creation
