@@ -11,14 +11,8 @@
  */
 
 
-package com.pe.claimsservice.model;
+package com.pe.claimsservice.dto;
 
-import com.google.gson.*;
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
-import com.google.gson.stream.JsonWriter;
-import org.openapitools.client.JSON;
 
 import java.io.IOException;
 import java.util.HashSet;
@@ -27,47 +21,51 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * CreateClaimResponse
+ * ErrorResponse
  */
 @javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-07-24T23:30:41.403953400-05:00[America/Lima]", comments = "Generator version: 7.7.0")
-public class CreateClaimResponse {
-  public static final String SERIALIZED_NAME_CLAIM_ID = "claimId";
-  @SerializedName(SERIALIZED_NAME_CLAIM_ID)
-  private String claimId;
+public class ErrorResponse {
+  public static final String SERIALIZED_NAME_CODE = "code";
+  @SerializedName(SERIALIZED_NAME_CODE)
+  private Integer code;
 
   public static final String SERIALIZED_NAME_MESSAGE = "message";
   @SerializedName(SERIALIZED_NAME_MESSAGE)
   private String message;
 
-  public CreateClaimResponse() {
+  public static final String SERIALIZED_NAME_DETAILS = "details";
+  @SerializedName(SERIALIZED_NAME_DETAILS)
+  private String details;
+
+  public ErrorResponse() {
   }
 
-  public CreateClaimResponse claimId(String claimId) {
-    this.claimId = claimId;
+  public ErrorResponse code(Integer code) {
+    this.code = code;
     return this;
   }
 
   /**
-   * Unique identifier for the created claim
-   * @return claimId
+   * Error code
+   * @return code
    */
   @javax.annotation.Nullable
-  public String getClaimId() {
-    return claimId;
+  public Integer getCode() {
+    return code;
   }
 
-  public void setClaimId(String claimId) {
-    this.claimId = claimId;
+  public void setCode(Integer code) {
+    this.code = code;
   }
 
 
-  public CreateClaimResponse message(String message) {
+  public ErrorResponse message(String message) {
     this.message = message;
     return this;
   }
 
   /**
-   * Confirmation message for the created claim
+   * Error message
    * @return message
    */
   @javax.annotation.Nullable
@@ -80,6 +78,25 @@ public class CreateClaimResponse {
   }
 
 
+  public ErrorResponse details(String details) {
+    this.details = details;
+    return this;
+  }
+
+  /**
+   * Additional error details
+   * @return details
+   */
+  @javax.annotation.Nullable
+  public String getDetails() {
+    return details;
+  }
+
+  public void setDetails(String details) {
+    this.details = details;
+  }
+
+
 
   @Override
   public boolean equals(Object o) {
@@ -89,22 +106,24 @@ public class CreateClaimResponse {
     if (o == null || getClass() != o.getClass()) {
       return false;
     }
-    CreateClaimResponse createClaimResponse = (CreateClaimResponse) o;
-    return Objects.equals(this.claimId, createClaimResponse.claimId) &&
-        Objects.equals(this.message, createClaimResponse.message);
+    ErrorResponse errorResponse = (ErrorResponse) o;
+    return Objects.equals(this.code, errorResponse.code) &&
+        Objects.equals(this.message, errorResponse.message) &&
+        Objects.equals(this.details, errorResponse.details);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(claimId, message);
+    return Objects.hash(code, message, details);
   }
 
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append("class CreateClaimResponse {\n");
-    sb.append("    claimId: ").append(toIndentedString(claimId)).append("\n");
+    sb.append("class ErrorResponse {\n");
+    sb.append("    code: ").append(toIndentedString(code)).append("\n");
     sb.append("    message: ").append(toIndentedString(message)).append("\n");
+    sb.append("    details: ").append(toIndentedString(details)).append("\n");
     sb.append("}");
     return sb.toString();
   }
@@ -127,8 +146,9 @@ public class CreateClaimResponse {
   static {
     // a set of all properties/fields (JSON key names)
     openapiFields = new HashSet<String>();
-    openapiFields.add("claimId");
+    openapiFields.add("code");
     openapiFields.add("message");
+    openapiFields.add("details");
 
     // a set of required properties/fields (JSON key names)
     openapiRequiredFields = new HashSet<String>();
@@ -138,28 +158,28 @@ public class CreateClaimResponse {
    * Validates the JSON Element and throws an exception if issues found
    *
    * @param jsonElement JSON Element
-   * @throws IOException if the JSON Element is invalid with respect to CreateClaimResponse
+   * @throws IOException if the JSON Element is invalid with respect to ErrorResponse
    */
   public static void validateJsonElement(JsonElement jsonElement) throws IOException {
       if (jsonElement == null) {
-        if (!CreateClaimResponse.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
-          throw new IllegalArgumentException(String.format("The required field(s) %s in CreateClaimResponse is not found in the empty JSON string", CreateClaimResponse.openapiRequiredFields.toString()));
+        if (!ErrorResponse.openapiRequiredFields.isEmpty()) { // has required fields but JSON element is null
+          throw new IllegalArgumentException(String.format("The required field(s) %s in ErrorResponse is not found in the empty JSON string", ErrorResponse.openapiRequiredFields.toString()));
         }
       }
 
       Set<Map.Entry<String, JsonElement>> entries = jsonElement.getAsJsonObject().entrySet();
       // check to see if the JSON string contains additional fields
       for (Map.Entry<String, JsonElement> entry : entries) {
-        if (!CreateClaimResponse.openapiFields.contains(entry.getKey())) {
-          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `CreateClaimResponse` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
+        if (!ErrorResponse.openapiFields.contains(entry.getKey())) {
+          throw new IllegalArgumentException(String.format("The field `%s` in the JSON string is not defined in the `ErrorResponse` properties. JSON: %s", entry.getKey(), jsonElement.toString()));
         }
       }
         JsonObject jsonObj = jsonElement.getAsJsonObject();
-      if ((jsonObj.get("claimId") != null && !jsonObj.get("claimId").isJsonNull()) && !jsonObj.get("claimId").isJsonPrimitive()) {
-        throw new IllegalArgumentException(String.format("Expected the field `claimId` to be a primitive type in the JSON string but got `%s`", jsonObj.get("claimId").toString()));
-      }
       if ((jsonObj.get("message") != null && !jsonObj.get("message").isJsonNull()) && !jsonObj.get("message").isJsonPrimitive()) {
         throw new IllegalArgumentException(String.format("Expected the field `message` to be a primitive type in the JSON string but got `%s`", jsonObj.get("message").toString()));
+      }
+      if ((jsonObj.get("details") != null && !jsonObj.get("details").isJsonNull()) && !jsonObj.get("details").isJsonPrimitive()) {
+        throw new IllegalArgumentException(String.format("Expected the field `details` to be a primitive type in the JSON string but got `%s`", jsonObj.get("details").toString()));
       }
   }
 
@@ -167,22 +187,22 @@ public class CreateClaimResponse {
     @SuppressWarnings("unchecked")
     @Override
     public <T> TypeAdapter<T> create(Gson gson, TypeToken<T> type) {
-       if (!CreateClaimResponse.class.isAssignableFrom(type.getRawType())) {
-         return null; // this class only serializes 'CreateClaimResponse' and its subtypes
+       if (!ErrorResponse.class.isAssignableFrom(type.getRawType())) {
+         return null; // this class only serializes 'ErrorResponse' and its subtypes
        }
        final TypeAdapter<JsonElement> elementAdapter = gson.getAdapter(JsonElement.class);
-       final TypeAdapter<CreateClaimResponse> thisAdapter
-                        = gson.getDelegateAdapter(this, TypeToken.get(CreateClaimResponse.class));
+       final TypeAdapter<ErrorResponse> thisAdapter
+                        = gson.getDelegateAdapter(this, TypeToken.get(ErrorResponse.class));
 
-       return (TypeAdapter<T>) new TypeAdapter<CreateClaimResponse>() {
+       return (TypeAdapter<T>) new TypeAdapter<ErrorResponse>() {
            @Override
-           public void write(JsonWriter out, CreateClaimResponse value) throws IOException {
+           public void write(JsonWriter out, ErrorResponse value) throws IOException {
              JsonObject obj = thisAdapter.toJsonTree(value).getAsJsonObject();
              elementAdapter.write(out, obj);
            }
 
            @Override
-           public CreateClaimResponse read(JsonReader in) throws IOException {
+           public ErrorResponse read(JsonReader in) throws IOException {
              JsonElement jsonElement = elementAdapter.read(in);
              validateJsonElement(jsonElement);
              return thisAdapter.fromJsonTree(jsonElement);
@@ -193,18 +213,18 @@ public class CreateClaimResponse {
   }
 
   /**
-   * Create an instance of CreateClaimResponse given an JSON string
+   * Create an instance of ErrorResponse given an JSON string
    *
    * @param jsonString JSON string
-   * @return An instance of CreateClaimResponse
-   * @throws IOException if the JSON string is invalid with respect to CreateClaimResponse
+   * @return An instance of ErrorResponse
+   * @throws IOException if the JSON string is invalid with respect to ErrorResponse
    */
-  public static CreateClaimResponse fromJson(String jsonString) throws IOException {
-    return JSON.getGson().fromJson(jsonString, CreateClaimResponse.class);
+  public static ErrorResponse fromJson(String jsonString) throws IOException {
+    return JSON.getGson().fromJson(jsonString, ErrorResponse.class);
   }
 
   /**
-   * Convert an instance of CreateClaimResponse to an JSON string
+   * Convert an instance of ErrorResponse to an JSON string
    *
    * @return JSON string
    */

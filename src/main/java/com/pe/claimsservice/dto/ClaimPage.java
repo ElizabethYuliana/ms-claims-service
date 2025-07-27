@@ -11,7 +11,7 @@
  */
 
 
-package com.pe.claimsservice.model;
+package com.pe.claimsservice.dto;
 
 import com.google.gson.*;
 import com.google.gson.annotations.SerializedName;
